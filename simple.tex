@@ -1,0 +1,201 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% A simple template for LaTeX slides.
+%
+% With the given Makefile as the same 
+% directory as this, run 'make all'
+% and see the files created.
+% 
+% Copyright (c) 2009 Ken Schutte
+% Updates, documation, and more at:
+% http://kenschutte.com/latex/slides
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\SeminarPaperVersion{y} % collapses overlays
+
+\documentclass{seminar}
+
+% for the \inverseslidemag for pstricks figs:
+%??
+%\input{seminar.bug}
+
+% This for broken installs that flip page wrong way
+%  (dvips makes upside down .ps...)
+\special{! TeXDict begin /landplus90{true}store end }
+
+% for slideheading:
+\usepackage{slidesec}
+
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{pstricks}
+\usepackage{amsmath}
+
+\usepackage{semcolor}
+
+\usepackage{thumbpdf}  % enable thumbnail view in acroread
+
+\usepackage{semlayer}  % slide overlays
+
+\usepackage[ps2pdf,a4paper,
+            pdfpagemode=UseNone,urlcolor=NavyBlue]{hyperref}
+  
+% Workaround to use hyperref and landscape slides
+% Remove if you are using portrait slides
+% from http://astronomy.sussex.ac.uk/~eddie/soft/tutorial.html
+\makeatletter
+%    \def\special@paper{297mm,210mm}
+  \def\special@paper{280mm,220mm}
+\makeatother
+
+\usepackage{graphicx}
+
+
+% the following makes overlays cumulative:
+\makeatletter
+\def\pst@initoverlay#1{%
+\pst@Verb{%
+/BeginOL {dup (all) eq exch TheOL le or {IfVisible not {Visible
+/IfVisible true def} if} {IfVisible {Invisible /IfVisible false def} if}
+ifelse} def
+\tx@InitOL /TheOL (#1) def}}
+\makeatother
+
+
+%%
+%% Some handy macros for writing slides
+%%
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+
+\newcommand{\ol}[2]{
+\begin{overlay}{#1}{
+#2
+}\end{overlay}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\name}{Your Name}
+\newcommand{\talktitle}{The Lecture Title}
+
+%% You might replace the
+%% date here with '\today'
+%% But, often when you run 
+%% latex may not be when you 
+%% give the talk...
+\newcommand{\talkdate}{January 1, 2000}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+
+% Don't change/remove the following line!
+% It is automatically changed by Makefile
+% to create both slides and handouts.
+\overlaystrue
+
+
+% -----------------------------------------------------------------
+\begin{slide}
+
+%%\thispagestyle{empty} % no page number of first page...
+
+%% No page number or header/footer on title page:
+\pagestyle{empty}
+
+\begin{center}
+
+{\huge \talktitle}
+
+\bigskip
+
+  \name
+
+  Your Organization
+
+  \talkdate
+
+\end{center}
+
+\end{slide}
+
+
+% -----------------------------------------------------------------
+
+% turn off borders:
+\slideframe{none}
+\pagestyle{fancy}
+
+%\setlength{\headrulewidth}[0.15pt]
+%\setlength{\footrulewidth}[0.15pt]
+%\lfoot{\scriptsize \rm \theslide}
+
+\fancyhf{}  % clear all fields
+\fancyhead[L]{\scriptsize \sl \talktitle}
+\fancyhead[R]{\scriptsize \sl \name $\,$ -- \talkdate}
+
+%\centerslidesfalse \slideframe{none}
+
+
+%%
+%% The slide heading
+%% - modify to change text size for slide
+%%   titles, etc.
+%%
+\renewcommand{\makeslideheading}[1]{%
+  \begin{center}
+  \huge{ \textbf{#1} }
+  \end{center}
+%  \vspace{.1cm}
+}
+
+\centerslidesfalse
+
+% -----------------------------------------------------------------
+\begin{slide}
+\slideheading{A very simple slide}
+
+Just write stuff here.
+
+Of course, you can add any \LaTeX,
+
+$$
+\mathcal{F} \{x[n]\} =
+X(\omega) = \sum_{n=-\infty}^{\infty} x[n] e^{-j \omega n}
+$$
+
+\end{slide}
+
+
+% -----------------------------------------------------------------
+\begin{slide}
+\slideheading{A more typical slide}
+
+  \bi
+    \item Often want to use bullets
+    \item See the .tex file for handy bi,ei macros I use.
+    \bi
+      \item As is, this first group is displayed originally,
+      \item (all at once)
+    \ei
+
+    \ol{1}{
+      \item This second group is revealed later
+      \bi
+        \item Of course you can do it however you want
+        \item Everything is 
+        \item \textbf{customizable!}
+      \ei
+    }
+  \ei
+
+\end{slide}
+
+
+\end{document}
